@@ -9,7 +9,10 @@
   <%= link_to beer.name, beer %>
   <% end %>
   </p>
-  <p><%=link_to 'list of beers', beers_path%></p>
-</div>
+  <% if brewery.ratings.empty? %>
+  <% else %>
+  <p> Brewery has <%= brewery.ratings.count %> <%="rating".pluralize(brewery.ratings.count)%> with an average of <%= brewery.average_rating.round(1) %></p>
+  <% end %>
 
+</div>
 
