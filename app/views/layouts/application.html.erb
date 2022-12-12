@@ -11,12 +11,26 @@
   </head>
 
   <body>
-      <div class="navibar">
+   <% if current_user %>
+   <div class="navibar">
     <%= link_to 'breweries', breweries_path %>
     <%= link_to 'beers', beers_path %>
     <%= link_to "ratings", ratings_path %>
-  </div>
-
-  <%= yield %>
+    <%= link_to "users", users_path %>
+    <%= link_to "#{current_user.username}", current_user %>
+    <%= link_to "Rate a new beer", new_rating_path %>
+    <%= link_to "Sign out", signout_path, class: "nav-link", data: {turbo_method: :delete}%>
+   </div>
+   <% else %>
+    <div class="navibar">
+    <%= link_to 'breweries', breweries_path %>
+    <%= link_to 'beers', beers_path %>
+    <%= link_to "ratings", ratings_path %>
+    <%= link_to "users", users_path %>
+    <%= link_to "Sign up", signup_path %>
+    <%= link_to "Sign in", signin_path %>
+   </div>
+   <% end %>
+   <%= yield %>
   </body>
 </html>
