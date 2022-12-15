@@ -1,4 +1,6 @@
 class BeersController < ApplicationController
+  before_action :ensure_that_signed_in, except: %i[index show]
+  before_action :set_breweries_and_styles_for_template, only: %i[new edit create]
   before_action :set_beer, only: %i[show edit update destroy]
 
   # GET /beers or /beers.json
@@ -12,14 +14,12 @@ class BeersController < ApplicationController
   # GET /beers/new
   def new
     @beer = Beer.new
-    @breweries = Brewery.all
-    @styles = ['Weizen', 'Lager', 'Pale ale', 'IPA', 'Porter', 'Lowalcohol']
+    set_breweries_and_styles_for_template
   end
 
   # GET /beers/1/edit
   def edit
-    @breweries = Brewery.all
-    @styles = ['Weizen', 'Lager', 'Pale ale', 'IPA', 'Porter', 'Lowalcohol']
+    before_action :set_breweries_and_styles_for_template, only: %i[new edit create]
   end
 
   # POST /beers or /beers.json
@@ -29,11 +29,11 @@ class BeersController < ApplicationController
     respond_to do |format|
       if @beer.save
         format.html { redirect_to beers_url, notice: 'Beer was successfully created.' }
-        format.json { render :show, status: :created, location: @beer }
+        format.json { render action :show, status: :created, location: @beer }
       else
         @breweries = Brewery.all
-        @styles = ["Weizen", "Lager", "Pale ale", "IPA", "Porter", "Lowalcohol"]
-        format.html { render :new }
+        @styles = ['Weizen', 'Lager', 'Pale ale', 'IPA', 'Porter', 'Lowalcohol']
+        format.html { render action: 'new' }
         format.json { render json: @beer.errors, status: :unprocessable_entity }
       end
     end
@@ -73,4 +73,9 @@ class BeersController < ApplicationController
   def beer_params
     params.require(:beer).permit(:name, :style, :brewery_id)
   end
+end
+
+def set_breweries_and_styles_for_template
+  @breweries = Brewery.all
+  @styles = ['Weizen', 'Lager', 'Pale ale', 'IPA', 'Porter', 'Lowalcohol']
 end

@@ -1,23 +1,28 @@
 class User < ApplicationRecord
   include RatingAverage
+
   has_secure_password
-  validates :username, uniqueness: true, length: { minimum: 3, maximum: 30 }
-  validates :password, length: { minimum: 4 }
+
   has_many :ratings, dependent: :destroy
   has_many :beers, through: :ratings
-  def average
-    @ratings
+
+  has_many :memberships, dependent: :destroy
+  has_many :beer_clubs, through: :memberships
+
+  validates :username, uniqueness: true,
+                       length: { minimum: 3, maximum: 30 }
+
+  validates :password, length: { minimum: 4 },
+                       format: { with: /\A[A-Z].*\d|\d.*[A-Z]\z/, message: 'must include one upper case letter and number' }
+  def favorite_beer
+    return nil if ratings.empty?
+
+    ratings.order(score: :desc).limit(1).first.beer
   end
-end
 
-class Rating < ApplicationRecord
-  belongs_to :beer
-  belongs_to :user
-  validates :score, numericality: { greater_than_or_equal_to: 1,
-                                    less_than_or_equal_to: 50,
-                                    only_integer: true }
+  def favorite_style
+    return nil if ratings.empty?
 
-  def to_s
-    "#{beer.name} #{score}"
+    ratings.order(score: :desc).limit(1).first.beer.style
   end
 end

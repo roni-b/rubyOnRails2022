@@ -5,3 +5,7 @@ Documentation:
 Metrics/BlockLength:
   Enabled: true
   Max: 15
+Style/StringLiterals:
+  Enabled: false
+Style/EmptyMethod:
+  Enabled: false
