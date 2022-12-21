@@ -72,6 +72,7 @@ group :test do
   gem 'selenium-webdriver'
   gem 'simplecov', require: false
   gem 'webdrivers'
+  gem 'webmock'
 end
 
 group :development, :test do
@@ -87,3 +88,5 @@ group :development, :test do
 end
 
 gem 'bcrypt', '~> 3.1.7'
+
+gem 'httparty'

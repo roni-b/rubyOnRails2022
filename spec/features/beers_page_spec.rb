@@ -2,32 +2,37 @@ require 'rails_helper'
 
 include Helpers
 
-describe "User" do
-    let!(:user) { FactoryBot.create :user }
-    before :each do
-      visit signin_path
-      fill_in('username', with: 'Pekka')
-      fill_in('password', with: 'Foobar1')
-      click_button('Log in')
-    end
+describe "Beers" do
+  before :each do
+    FactoryBot.create(:brewery, name: "Schlenkerla", year: 1678)
+    FactoryBot.create :user
+    FactoryBot.create :style
+    sign_in(username: "Pekka", password: "Foobar1")
+  end
 
-  describe "Beers page" do
-    let!(:brewery) { FactoryBot.create :brewery, name: "Koff" }
+  it "can be created with valid input" do
+    visit new_beer_path
+    fill_in('beer[name]', with: 'Helles')
+    select('Schlenkerla', from: 'beer[brewery_id]')
 
-    it "can add a beer" do
-      visit new_beer_path
-      expect(page).to have_content 'New beer'
-      fill_in('beer_name', with: 'testi')
-      expect do
-        click_button('Create Beer')
-      end.to change { Beer.count }.by(1)
-    end
+    expect do
+      click_button('Create Beer')
+    end.to change { Beer.count }.by(1)
+  end
 
-    it "does not add when invalid name" do
-      visit new_beer_path
-      expect do
-        click_button('Create Beer')
-      end.to change { Beer.count }.by(0)
-    end
+  it "can not be created with without a name" do
+    visit new_beer_path
+    select('Schlenkerla', from: 'beer[brewery_id]')
+
+    expect do
+      click_button('Create Beer')
+    end.to change { Beer.count }.by(0)
+
+    expect(page).to have_content "Name can't be blank"
   end
 end
+
+# rspec spec/features/beers_page_spec.rb
+
+
+#save_and_open_page

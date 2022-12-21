@@ -9,7 +9,10 @@ class BeersController < ApplicationController
   end
 
   # GET /beers/1 or /beers/1.json
-  def show; end
+  def show
+    @rating = Rating.new
+    @rating.beer = @beer
+  end
 
   # GET /beers/new
   def new
@@ -31,8 +34,7 @@ class BeersController < ApplicationController
         format.html { redirect_to beers_url, notice: 'Beer was successfully created.' }
         format.json { render action :show, status: :created, location: @beer }
       else
-        @breweries = Brewery.all
-        @styles = ['Weizen', 'Lager', 'Pale ale', 'IPA', 'Porter', 'Lowalcohol']
+        set_breweries_and_styles_for_template
         format.html { render action: 'new' }
         format.json { render json: @beer.errors, status: :unprocessable_entity }
       end
@@ -71,11 +73,11 @@ class BeersController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def beer_params
-    params.require(:beer).permit(:name, :style, :brewery_id)
+    params.require(:beer).permit(:name, :style_id, :brewery_id)
   end
 end
 
 def set_breweries_and_styles_for_template
   @breweries = Brewery.all
-  @styles = ['Weizen', 'Lager', 'Pale ale', 'IPA', 'Porter', 'Lowalcohol']
+  @styles = Style.all
 end

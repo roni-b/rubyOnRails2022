@@ -7,7 +7,9 @@ class MembershipsController < ApplicationController
   end
 
   # GET /memberships/1 or /memberships/1.json
-  def show; end
+  def show
+    redirect_to beer_club_path, notice: "#{current_user.username} welcome to the club "
+  end
 
   # GET /memberships/new
   def new
@@ -15,7 +17,8 @@ class MembershipsController < ApplicationController
   end
 
   # GET /memberships/1/edit
-  def edit; end
+  def edit
+  end
 
   # POST /memberships or /memberships.json
   def create
