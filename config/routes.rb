@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   resources :memberships
   resources :beer_clubs
   resources :users do
-    post 'toggle_account_status', on: :member
+    post 'toggle_closed', on: :member
   end
   resources :beers
   resources :ratings, only: %i[index new create destroy]
@@ -17,7 +17,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
   root 'breweries#index'
-  get 'kaikki_bisset', to: 'beers#index'
+
   get 'ratings', to: 'ratings#index'
   get 'ratings/new', to: 'ratings#new'
   get 'signup', to: 'users#new'

@@ -1,5 +1,6 @@
 class UsersController < ApplicationController
   before_action :set_user, only: %i[show edit update destroy]
+  before_action :ensure_that_admin, only: [:toggle_closed]
 
   # GET /users or /users.json
   def index
@@ -55,6 +56,15 @@ class UsersController < ApplicationController
     end
   end
 
+  def toggle_closed
+    user = User.find(params[:id])
+    user.update_attribute :closed, !user.closed
+
+    new_status = user.closed? ? "open" : "closed"
+
+    redirect_to user, notice: "account status changed to #{new_status}"
+  end
+
   private
 
   # Use callbacks to share common setup or constraints between actions.
@@ -65,12 +75,5 @@ class UsersController < ApplicationController
   # Only allow a list of trusted parameters through.
   def user_params
     params.require(:user).permit(:username, :password, :password_confirmation)
-  end
-
-  def toggle_account_status
-    user = User.find(params[:id])
-    user.update_attribute :closed, !user.closed
-    new_status = user.closed? ? "closed" : "open"
-    redirect_to user, notice: "user status changed to #{new_status}"
   end
 end

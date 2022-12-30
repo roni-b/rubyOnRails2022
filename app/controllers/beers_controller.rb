@@ -22,7 +22,6 @@ class BeersController < ApplicationController
 
   # GET /beers/1/edit
   def edit
-    before_action :set_breweries_and_styles_for_template, only: %i[new edit create]
   end
 
   # POST /beers or /beers.json
