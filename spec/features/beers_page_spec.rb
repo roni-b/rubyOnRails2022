@@ -34,5 +34,4 @@ end
 
 # rspec spec/features/beers_page_spec.rb
 
-
-#save_and_open_page
+# save_and_open_page

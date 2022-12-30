@@ -66,4 +66,11 @@ class UsersController < ApplicationController
   def user_params
     params.require(:user).permit(:username, :password, :password_confirmation)
   end
+
+  def toggle_account_status
+    user = User.find(params[:id])
+    user.update_attribute :closed, !user.closed
+    new_status = user.closed? ? "closed" : "open"
+    redirect_to user, notice: "user status changed to #{new_status}"
+  end
 end

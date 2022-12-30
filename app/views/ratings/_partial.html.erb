@@ -1,0 +1,29 @@
+<table class="table">
+  <tr>
+    <th>Top breweries</th>
+  </tr>
+  <% @top_breweries.each do |brewery| %>
+  <tr>
+    <td><%= brewery.name %> <%= round(brewery.average_rating) %></td>
+  </tr>
+  <% end %>
+<table class="table">
+  <tr>
+    <th>Top beers</th>
+  </tr>
+  <% @top_beers.each do |beer| %>
+  <tr>
+    <td><%= beer.name %> <%= round(beer.average_rating) %></td>
+  </tr>
+  <% end %>
+<h2>Most active users</h2>
+  <% @top_users.each do |user| %>
+  <p><%= user.username %></p>
+  <% end %>
+<h2>Recent ratings</h2>
+<ul>
+  <% @ratings.recent.each do |rate| %>
+  <li><%= rate.beer %> <%= rate.score %> <%= rate.created_at %></li>
+  <% end %>
+</ul>
+<h2>Best styles</h2>

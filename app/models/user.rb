@@ -14,6 +14,7 @@ class User < ApplicationRecord
 
   validates :password, length: { minimum: 4 },
                        format: { with: /\A[A-Z].*\d|\d.*[A-Z]\z/, message: "must include one upper case letter and number" }
+  scope :admin, -> { where admin: true }
 
   def favorite_beer
     return nil if ratings.empty?
@@ -39,5 +40,10 @@ class User < ApplicationRecord
     return nil if ratings.empty?
 
     favorite_by(ratings, :brewery)
+  end
+
+  def self.top(n)
+    sorted_by_rating_in_desc_order = User.all.sort_by { |b| -(b.average_rating || 0) }
+    sorted_by_rating_in_desc_order[0, n]
   end
 end

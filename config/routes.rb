@@ -2,12 +2,16 @@ Rails.application.routes.draw do
   resources :styles
   resources :memberships
   resources :beer_clubs
-  resources :users
+  resources :users do
+    post 'toggle_account_status', on: :member
+  end
   resources :beers
-  resources :breweries
   resources :ratings, only: %i[index new create destroy]
   resource :session, only: %i[new create destroy]
   resources :places, only: %i[index show]
+  resources :breweries do
+    post 'toggle_activity', on: :member
+  end
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Defines the root path route ("/")

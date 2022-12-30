@@ -12,7 +12,7 @@ describe "Ratings page" do
 
   it "ratings exists" do
     visit ratings_path
-    expect(page).to have_content 'List of ratings'
-    expect(page).to have_content 'Number of ratings'
+    expect(page).to have_content 'Top breweries'
+    expect(page).to have_content 'Recent ratings'
   end
 end

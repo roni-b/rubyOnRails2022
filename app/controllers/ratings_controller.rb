@@ -1,6 +1,9 @@
 class RatingsController < ApplicationController
   def index
     @ratings = Rating.all
+    @top_breweries = Brewery.top 3
+    @top_beers = Beer.top 3
+    @top_users = User.top 3
   end
 
   def new
@@ -9,8 +12,8 @@ class RatingsController < ApplicationController
   end
 
   def create
-    rating = Rating.create params.require(:rating).permit(:score, :beer_id)
-    rating.user = current_user
+    @rating = Rating.new params.require(:rating).permit(:score, :beer_id)
+    @rating.user = current_user
     if @rating.save
       redirect_to current_user
     else

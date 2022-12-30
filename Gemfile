@@ -89,4 +89,7 @@ end
 
 gem 'bcrypt', '~> 3.1.7'
 
+gem 'bootstrap', '~> 5.2.0'
 gem 'httparty'
+gem 'jquery-rails'
+gem 'mini_racer'
